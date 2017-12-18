@@ -1,6 +1,6 @@
 package org.buffer.android.boilerplate.ui.mapper
 
-import org.buffer.android.boilerplate.presentation.model.BufferooView
+import org.buffer.android.boilerplate.presentation.browse.model.BufferooView
 import org.buffer.android.boilerplate.ui.model.BufferooViewModel
 import javax.inject.Inject
 

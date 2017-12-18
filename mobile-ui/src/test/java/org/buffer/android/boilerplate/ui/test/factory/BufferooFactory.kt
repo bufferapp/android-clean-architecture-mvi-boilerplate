@@ -1,7 +1,7 @@
 package org.buffer.android.boilerplate.ui.test.factory
 
 import org.buffer.android.boilerplate.domain.model.Bufferoo
-import org.buffer.android.boilerplate.presentation.model.BufferooView
+import org.buffer.android.boilerplate.presentation.browse.model.BufferooView
 
 /**
  * Factory class for Bufferoo related instances

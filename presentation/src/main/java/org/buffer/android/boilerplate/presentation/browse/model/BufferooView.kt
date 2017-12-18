@@ -1,4 +1,4 @@
-package org.buffer.android.boilerplate.presentation.model
+package org.buffer.android.boilerplate.presentation.browse.model
 
 /**
  * Representation for a [BufferooView] instance for this layers Model representation

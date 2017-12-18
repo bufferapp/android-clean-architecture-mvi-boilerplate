@@ -1,55 +1,71 @@
 package org.buffer.android.boilerplate.presentation.browse
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import io.reactivex.subscribers.DisposableSubscriber
-import org.buffer.android.boilerplate.domain.interactor.browse.GetBufferoos
-import org.buffer.android.boilerplate.domain.model.Bufferoo
-import org.buffer.android.boilerplate.presentation.data.Resource
-import org.buffer.android.boilerplate.presentation.data.ResourceState
-import org.buffer.android.boilerplate.presentation.mapper.BufferooMapper
-import org.buffer.android.boilerplate.presentation.model.BufferooView
+import io.reactivex.Observable
+import io.reactivex.ObservableTransformer
+import io.reactivex.functions.BiFunction
+import io.reactivex.subjects.PublishSubject
+import org.buffer.android.boilerplate.presentation.base.BaseIntent
+import org.buffer.android.boilerplate.presentation.base.BaseViewModel
+import org.buffer.android.boilerplate.presentation.base.model.TaskStatus
+import org.buffer.android.boilerplate.presentation.browse.mapper.BufferooMapper
 import javax.inject.Inject
 
 open class BrowseBufferoosViewModel @Inject internal constructor(
-        private val getBufferoos: GetBufferoos,
-        private val bufferooMapper: BufferooMapper) : ViewModel() {
+        private val browseProcessor: BrowseProcessor,
+        private val bufferooMapper: BufferooMapper)
+    : ViewModel(), BaseViewModel<BrowseIntent, BrowseUiModel> {
 
-    private val bufferoosLiveData: MutableLiveData<Resource<List<BufferooView>>> =
-            MutableLiveData()
+    private var intentsSubject: PublishSubject<BrowseIntent> = PublishSubject.create()
+    private val intentFilter: ObservableTransformer<BrowseIntent, BrowseIntent> =
+            ObservableTransformer<BrowseIntent, BrowseIntent> {
+                it.publish {
+                    Observable.merge(it.ofType(BrowseIntent.InitialIntent::class.java).take(1),
+                            it.filter({ intent -> intent !is BrowseIntent.InitialIntent }))
+                }
+            }
+    private val reducer: BiFunction<BrowseUiModel, BrowseResult, BrowseUiModel> =
+            BiFunction<BrowseUiModel, BrowseResult, BrowseUiModel> { previousState, result ->
+                when (result) {
+                    is BrowseResult.LoadBufferoosTask -> {
+                        when {
+                            result.status == TaskStatus.SUCCESS -> BrowseUiModel.Success(
+                                    result.bufferoos?.map { bufferooMapper.mapToView(it) })
+                            result.status == TaskStatus.FAILURE -> BrowseUiModel.Failed
+                            result.status == TaskStatus.IN_FLIGHT -> BrowseUiModel.InProgress
+                            else -> BrowseUiModel.Idle()
+                        }
+                    }
+                }
+            }
+    private val statesSubject: Observable<BrowseUiModel> = compose()
 
-    init {
-        fetchBufferoos()
+    override fun processIntents(intents: Observable<BrowseIntent>) {
+        intents.subscribe(intentsSubject)
     }
 
-    override fun onCleared() {
-        getBufferoos.dispose()
-        super.onCleared()
+    override fun states(): Observable<BrowseUiModel> {
+        return statesSubject
     }
 
-    fun getBufferoos(): LiveData<Resource<List<BufferooView>>> {
-        return bufferoosLiveData
+    private fun compose(): Observable<BrowseUiModel> {
+        return intentsSubject
+                .compose(intentFilter)
+                .map { this.actionFromIntent(it) }
+                .compose(browseProcessor.actionProcessor)
+                .scan<BrowseUiModel>(BrowseUiModel.Idle(), reducer)
+                .replay(1)
+                .autoConnect(0)
     }
 
-    fun fetchBufferoos() {
-        bufferoosLiveData.postValue(Resource(ResourceState.LOADING, null, null))
-        return getBufferoos.execute(BufferooSubscriber())
-    }
-
-    inner class BufferooSubscriber: DisposableSubscriber<List<Bufferoo>>() {
-
-        override fun onComplete() { }
-
-        override fun onNext(t: List<Bufferoo>) {
-            bufferoosLiveData.postValue(Resource(ResourceState.SUCCESS,
-                    t.map { bufferooMapper.mapToView(it) }, null))
+    private fun actionFromIntent(intent: BaseIntent): BrowseAction {
+        return when (intent) {
+            is BrowseIntent.LoadBufferoosIntent -> BrowseAction.LoadBufferoos
+            is BrowseIntent.RefreshBufferoosIntent -> BrowseAction.LoadBufferoos
+            is BrowseIntent.InitialIntent -> BrowseAction.LoadBufferoos
+            else -> throw UnsupportedOperationException(
+                    "Oops, that looks like an unknown intent: " + intent)
         }
-
-        override fun onError(exception: Throwable) {
-            bufferoosLiveData.postValue(Resource(ResourceState.ERROR, null, exception.message))
-        }
-
     }
 
 }

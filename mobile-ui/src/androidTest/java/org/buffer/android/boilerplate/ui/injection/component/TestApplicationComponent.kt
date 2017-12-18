@@ -11,9 +11,17 @@ import org.buffer.android.boilerplate.ui.injection.module.ActivityBindingModule
 import org.buffer.android.boilerplate.ui.injection.module.TestApplicationModule
 import org.buffer.android.boilerplate.ui.injection.scopes.PerApplication
 import org.buffer.android.boilerplate.ui.test.TestApplication
+import javax.inject.Singleton
 
-@Component(modules = arrayOf(TestApplicationModule::class, ActivityBindingModule::class,
-        AndroidSupportInjectionModule::class))
+@Singleton
+@Component(modules = arrayOf(
+        TestApplicationModule::class,
+        AndroidSupportInjectionModule::class,
+        TestCacheModule::class,
+        TestRemoteModule::class,
+        TestDataModule::class,
+        PresentationModule::class,
+        UiModule::class))
 @PerApplication
 interface TestApplicationComponent : ApplicationComponent {
 

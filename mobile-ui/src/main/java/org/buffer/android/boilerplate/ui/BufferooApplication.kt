@@ -6,7 +6,7 @@ import android.support.v4.BuildConfig
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import org.buffer.android.boilerplate.ui.injection.DaggerApplicationComponent
+import org.buffer.android.boilerplate.ui.injection.AppInjector
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -16,11 +16,7 @@ class BufferooApplication : Application(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
-        DaggerApplicationComponent
-                .builder()
-                .application(this)
-                .build()
-                .inject(this)
+        AppInjector.init(this)
         setupTimber()
     }
 

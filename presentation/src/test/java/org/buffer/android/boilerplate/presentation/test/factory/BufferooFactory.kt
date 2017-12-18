@@ -1,7 +1,7 @@
 package org.buffer.android.boilerplate.presentation.test.factory
 
 import org.buffer.android.boilerplate.domain.model.Bufferoo
-import org.buffer.android.boilerplate.presentation.model.BufferooView
+import org.buffer.android.boilerplate.presentation.browse.model.BufferooView
 import org.buffer.android.boilerplate.presentation.test.factory.DataFactory.Factory.randomLong
 import org.buffer.android.boilerplate.presentation.test.factory.DataFactory.Factory.randomUuid
 

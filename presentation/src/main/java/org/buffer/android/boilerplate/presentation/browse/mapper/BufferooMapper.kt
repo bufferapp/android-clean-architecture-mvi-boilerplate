@@ -1,7 +1,8 @@
-package org.buffer.android.boilerplate.presentation.mapper
+package org.buffer.android.boilerplate.presentation.browse.mapper
 
 import org.buffer.android.boilerplate.domain.model.Bufferoo
-import org.buffer.android.boilerplate.presentation.model.BufferooView
+import org.buffer.android.boilerplate.presentation.mapper.Mapper
+import org.buffer.android.boilerplate.presentation.browse.model.BufferooView
 import javax.inject.Inject
 
 /**

@@ -1,0 +1,66 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
+    buildToolsVersion globalConfiguration["androidBuildToolsVersion"]
+
+    defaultConfig {
+        minSdkVersion globalConfiguration["androidMinSdkVersion"]
+        targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
+        multiDexEnabled = true
+        testInstrumentationRunner "org.buffer.android.boilerplate.ui.test.TestRunner"
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
+    }
+
+    dexOptions {
+        preDexLibraries = false
+        dexInProcess = false
+        javaMaxHeapSize "4g"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+
+    lintOptions {
+        quiet true
+        abortOnError false
+        ignoreWarnings true
+    }
+
+    buildToolsVersion '26.0.2'
+}
+
+dependencies {
+    def injectionDependencies = rootProject.ext.injectionDependencies
+
+    implementation project(':mobile-ui')
+    implementation project(':presentation')
+    implementation project(':data')
+    implementation project(':cache')
+    implementation project(':remote')
+
+    implementation injectionDependencies.dagger
+    kapt injectionDependencies.daggerCompiler
+    implementation injectionDependencies.daggerSupport
+    kapt injectionDependencies.daggerProcessor
+    implementation injectionDependencies.mockito
+}
