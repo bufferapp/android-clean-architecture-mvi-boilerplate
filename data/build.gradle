@@ -1,15 +1,15 @@
 apply plugin: 'kotlin'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 dependencies {
     def dataDependencies = rootProject.ext.dataDependencies
     def dataTestDependencies = rootProject.ext.dataTestDependencies
 
-    compile project(':domain')
+    implementation project(':domain')
 
-    compile dataDependencies.javaxAnnotation
+    implementation dataDependencies.javaxAnnotation
 
     implementation dataDependencies.kotlin
     implementation dataDependencies.javaxInject

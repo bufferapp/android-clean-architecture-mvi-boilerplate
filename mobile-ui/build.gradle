@@ -48,7 +48,6 @@ android {
         ignoreWarnings true
     }
 
-    buildToolsVersion '26.0.2'
 }
 
 kapt {
@@ -86,11 +85,11 @@ dependencies {
     implementation mobileUiDependencies.glide
     implementation mobileUiDependencies.dagger
     implementation mobileUiDependencies.daggerSupport
-    provided mobileUiDependencies.mockito
+    compileOnly mobileUiDependencies.mockito
 
-    compile presentationDependencies.archRuntime
-    compile presentationDependencies.archExtensions
-    compile "android.arch.persistence.room:rxjava2:1.0.0"
+    implementation presentationDependencies.archRuntime
+    implementation presentationDependencies.archExtensions
+    implementation "android.arch.persistence.room:rxjava2:1.0.0"
     kapt presentationDependencies.archCompiler
 
     testImplementation mobileUiTestDependencies.kotlinJUnit

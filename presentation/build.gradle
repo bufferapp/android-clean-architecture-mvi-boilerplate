@@ -43,25 +43,23 @@ android {
         disable 'IconMissingDensityFolder'  //For testing purpose. This is safe to remove.
     }
 
-    buildToolsVersion '26.0.2'
 }
 
 kapt {
     correctErrorTypes = true
-    generateStubs = true
 }
 
 dependencies {
     def presentationDependencies = rootProject.ext.presentationDependencies
     def presentationTestDependencies = rootProject.ext.presentationTestDependencies
 
-    compile presentationDependencies.javaxAnnotation
+    implementation presentationDependencies.javaxAnnotation
 
-    compile presentationDependencies.kotlin
-    compile presentationDependencies.javaxInject
-    compile presentationDependencies.rxKotlin
-    compile presentationDependencies.archRuntime
-    compile presentationDependencies.archExtensions
+    implementation presentationDependencies.kotlin
+    implementation presentationDependencies.javaxInject
+    implementation presentationDependencies.rxKotlin
+    implementation presentationDependencies.archRuntime
+    implementation presentationDependencies.archExtensions
     kapt presentationDependencies.archCompiler
 
     testImplementation presentationTestDependencies.junit
@@ -70,5 +68,5 @@ dependencies {
     testImplementation presentationTestDependencies.robolectric
     testImplementation "android.arch.core:core-testing:1.0.0"
 
-    compile project(':domain')
+    implementation project(':domain')
 }
