@@ -68,5 +68,5 @@ dependencies {
     testImplementation presentationTestDependencies.robolectric
     testImplementation "android.arch.core:core-testing:1.0.0"
 
-    implementation project(':domain')
+    api project(':domain')
 }

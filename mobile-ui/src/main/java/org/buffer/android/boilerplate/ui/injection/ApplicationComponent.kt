@@ -6,19 +6,18 @@ import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 import org.buffer.android.boilerplate.ui.BufferooApplication
 import org.buffer.android.boilerplate.ui.injection.module.*
-import org.buffer.injection.module.ApplicationModule
+import org.buffer.android.boilerplate.ui.injection.module.ApplicationModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(
-        ApplicationModule::class,
-        AndroidSupportInjectionModule::class,
-        CacheModule::class,
-        DataModule::class,
-        DomainModule::class,
-        PresentationModule::class,
-        RemoteModule::class,
-        UiModule::class)
+@Component(modules = [ApplicationModule::class,
+    AndroidSupportInjectionModule::class,
+    CacheModule::class,
+    DataModule::class,
+    DomainModule::class,
+    PresentationModule::class,
+    RemoteModule::class,
+    UiModule::class]
 )
 interface ApplicationComponent {
 

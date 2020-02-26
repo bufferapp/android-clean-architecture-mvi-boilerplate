@@ -1,4 +1,4 @@
-package org.buffer.injection.module
+package org.buffer.android.boilerplate.ui.injection.module
 
 import android.app.Application
 import android.content.Context
