@@ -8,37 +8,28 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.reflect.Field
 import java.util.concurrent.TimeUnit
 
 /**
- * Provide "make" methods to create instances of [BufferooService]
+ * Provide "make" methods to create instances of [ArticleService]
  * and its related dependencies, such as OkHttpClient, Gson, etc.
  */
-object BufferooServiceFactory {
-    val baseUrl: String
+object ArticleServiceFactory {
 
-    init {
-        val klass = Class.forName("org.buffer.android.boilerplate.ui.BuildConfig")
-        val field: Field = klass.getDeclaredField("BASE_URL")
-        baseUrl = field[null].toString()
-    }
-
-    fun makeBuffeoorService(isDebug: Boolean): BufferooService {
+    fun makeArticleService(isDebug: Boolean): ArticleService {
         val okHttpClient = makeOkHttpClient(
                 makeLoggingInterceptor(isDebug))
-        return makeBufferooService(okHttpClient, makeGson())
+        return makeArticleService(okHttpClient, makeGson())
     }
 
-    private fun makeBufferooService(okHttpClient: OkHttpClient, gson: Gson): BufferooService {
-
+    private fun makeArticleService(okHttpClient: OkHttpClient, gson: Gson): ArticleService {
         val retrofit = Retrofit.Builder()
-                .baseUrl(baseUrl)
+                .baseUrl("https://newsapi.org/v2/")
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
-        return retrofit.create(BufferooService::class.java)
+        return retrofit.create(ArticleService::class.java)
     }
 
     private fun makeOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
@@ -62,7 +53,7 @@ object BufferooServiceFactory {
         logging.level = if (isDebug)
             HttpLoggingInterceptor.Level.BODY
         else
-            HttpLoggingInterceptor.Level.NONE
+          HttpLoggingInterceptor.Level.NONE
         return logging
     }
 

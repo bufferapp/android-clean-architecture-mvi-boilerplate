@@ -8,12 +8,13 @@ import io.reactivex.subjects.PublishSubject
 import org.buffer.android.boilerplate.presentation.base.BaseIntent
 import org.buffer.android.boilerplate.presentation.base.BaseViewModel
 import org.buffer.android.boilerplate.presentation.base.model.TaskStatus
+import org.buffer.android.boilerplate.presentation.browse.mapper.ArticleMapper
 import org.buffer.android.boilerplate.presentation.browse.mapper.BufferooMapper
 import javax.inject.Inject
 
 open class BrowseBufferoosViewModel @Inject internal constructor(
         private val browseProcessor: BrowseProcessor,
-        private val bufferooMapper: BufferooMapper)
+        private val articleMapper: ArticleMapper)
     : ViewModel(), BaseViewModel<BrowseIntent, BrowseUiModel> {
 
     private var intentsSubject: PublishSubject<BrowseIntent> = PublishSubject.create()
@@ -27,10 +28,10 @@ open class BrowseBufferoosViewModel @Inject internal constructor(
     private val reducer: BiFunction<BrowseUiModel, BrowseResult, BrowseUiModel> =
             BiFunction<BrowseUiModel, BrowseResult, BrowseUiModel> { previousState, result ->
                 when (result) {
-                    is BrowseResult.LoadBufferoosTask -> {
+                    is BrowseResult.LoadArticleTask -> {
                         when {
                             result.status == TaskStatus.SUCCESS -> BrowseUiModel.Success(
-                                    result.bufferoos?.map { bufferooMapper.mapToView(it) })
+                                    result.articles?.map { articleMapper.mapToView(it) })
                             result.status == TaskStatus.FAILURE -> BrowseUiModel.Failed
                             result.status == TaskStatus.IN_FLIGHT -> BrowseUiModel.InProgress
                             else -> BrowseUiModel.Idle()

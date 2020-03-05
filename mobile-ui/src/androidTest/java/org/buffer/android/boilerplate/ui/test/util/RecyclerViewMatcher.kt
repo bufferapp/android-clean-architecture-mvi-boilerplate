@@ -17,8 +17,8 @@ open class RecyclerViewMatcher constructor(var recyclerViewId: Int) {
     fun atPositionOnView(position: Int, targetViewId: Int): Matcher<View> {
 
         return object : TypeSafeMatcher<View>() {
-            internal var resources: Resources? = null
-            internal var childView: View? = null
+            var resources: Resources? = null
+            var childView: View? = null
 
             override fun describeTo(description: Description) {
                 var idDescription = Integer.toString(recyclerViewId)

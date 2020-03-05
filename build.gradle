@@ -2,6 +2,7 @@
 
 buildscript {
     ext.kotlin_version = '1.3.61'
+    ext.apikey = NEWS_API_KEY
     repositories {
         google()
         jcenter()

@@ -5,8 +5,10 @@ import android.arch.persistence.room.Room
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import org.buffer.android.boilerplate.cache.ArticleCacheImpl
 import org.buffer.android.boilerplate.cache.BufferooCacheImpl
 import org.buffer.android.boilerplate.cache.db.BufferoosDatabase
+import org.buffer.android.boilerplate.data.repository.ArticleCache
 import org.buffer.android.boilerplate.data.repository.BufferooCache
 
 /**
@@ -27,11 +29,14 @@ abstract class CacheModule {
         fun provideBufferoosDatabase(application: Application): BufferoosDatabase {
             return Room.databaseBuilder(
                     application.applicationContext,
-                    BufferoosDatabase::class.java, "bufferoos.db")
+                    BufferoosDatabase::class.java, "bufferoos_new.db")
                     .build()
         }
     }
 
     @Binds
     abstract fun bindBufferooCache(bufferooCacheImpl: BufferooCacheImpl): BufferooCache
+
+    @Binds
+    abstract fun bindArticleCache(articleCacheImpl: ArticleCacheImpl): ArticleCache
 }

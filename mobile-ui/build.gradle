@@ -25,7 +25,13 @@ android {
     }
 
     buildTypes {
+        release{
+            buildConfigField 'String', "API_KEY", NEWS_API_KEY
+            buildConfigField 'String', "BASE_URL", NEWS_BASE_URL
+        }
         debug {
+            buildConfigField 'String', "API_KEY", NEWS_API_KEY
+            buildConfigField 'String', "BASE_URL", NEWS_BASE_URL
             testCoverageEnabled true
         }
     }

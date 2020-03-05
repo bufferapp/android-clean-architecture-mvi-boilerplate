@@ -18,7 +18,7 @@ object TestCacheModule {
     fun provideBufferoosDatabase(application: Application): BufferoosDatabase {
         return Room.databaseBuilder(
                 application.applicationContext,
-                BufferoosDatabase::class.java, "bufferoos.db")
+                BufferoosDatabase::class.java, "bufferoos_new.db")
                 .build()
     }
 

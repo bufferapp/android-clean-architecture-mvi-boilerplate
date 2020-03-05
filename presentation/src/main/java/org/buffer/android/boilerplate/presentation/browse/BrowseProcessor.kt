@@ -2,25 +2,25 @@ package org.buffer.android.boilerplate.presentation.browse
 
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
-import org.buffer.android.boilerplate.domain.interactor.browse.GetBufferoos
+import org.buffer.android.boilerplate.domain.interactor.browse.GetArticles
 import javax.inject.Inject
 
-class BrowseProcessor @Inject constructor(private val getBufferoos: GetBufferoos) {
+class BrowseProcessor @Inject constructor(private val getArticles: GetArticles) {
 
     private val conversationsProcessor: ObservableTransformer<
-            BrowseAction.LoadBufferoos, BrowseResult> = ObservableTransformer{
-                it.switchMap {
-                    getBufferoos.execute()
-                            .map {
-                                BrowseResult.LoadBufferoosTask.success(it)
-                            }
-                            .onErrorReturn {
-                                BrowseResult.LoadBufferoosTask.failure()
-                            }
-                            .toObservable()
-                            .startWith(BrowseResult.LoadBufferoosTask.inFlight())
-                }
-            }
+            BrowseAction.LoadBufferoos, BrowseResult> = ObservableTransformer {
+        it.switchMap {
+            getArticles.execute()
+                    .map {
+                        BrowseResult.LoadArticleTask.success(it)
+                    }
+                    .onErrorReturn {
+                        BrowseResult.LoadArticleTask.failure()
+                    }
+                    .toObservable()
+                    .startWith(BrowseResult.LoadArticleTask.inFlight())
+        }
+    }
 
     var actionProcessor: ObservableTransformer<BrowseAction, BrowseResult>
 

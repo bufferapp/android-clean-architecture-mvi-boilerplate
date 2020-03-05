@@ -3,10 +3,9 @@ package org.buffer.android.boilerplate.ui.injection.module
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import org.buffer.android.boilerplate.data.repository.ArticleRemote
 import org.buffer.android.boilerplate.data.repository.BufferooRemote
-import org.buffer.android.boilerplate.remote.BufferooRemoteImpl
-import org.buffer.android.boilerplate.remote.BufferooService
-import org.buffer.android.boilerplate.remote.BufferooServiceFactory
+import org.buffer.android.boilerplate.remote.*
 import org.buffer.android.boilerplate.ui.BuildConfig
 
 /**
@@ -26,8 +25,17 @@ abstract class RemoteModule {
         fun provideBufferooService(): BufferooService {
             return BufferooServiceFactory.makeBuffeoorService(BuildConfig.DEBUG)
         }
+
+        @Provides
+        @JvmStatic
+        fun provideArticleService(): ArticleService {
+            return ArticleServiceFactory.makeArticleService(BuildConfig.DEBUG)
+        }
     }
 
     @Binds
     abstract fun bindBufferooRemote(bufferooRemoteImpl: BufferooRemoteImpl): BufferooRemote
+
+    @Binds
+    abstract fun bindArticleRemote(articleRemoteImpl: ArticleRemoteImpl): ArticleRemote
 }
