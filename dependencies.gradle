@@ -8,12 +8,12 @@ allprojects {
 ext {
     //Android
     androidBuildToolsVersion = "28.0.3"
-    androidMinSdkVersion = 15
+    androidMinSdkVersion = 16
     androidTargetSdkVersion = 28
     androidCompileSdkVersion = 28
 
     //Libraries
-    kotlinVersion = '1.3.61'
+    kotlinVersion = '1.3.72'
     kotlinCoroutineVersion = '1.3.3'
     butterKnifeVersion = '7.0.1'
     recyclerViewVersion = '21.0.3'
