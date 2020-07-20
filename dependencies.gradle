@@ -23,7 +23,7 @@ ext {
     javaxAnnotationVersion = '1.0'
     javaxInjectVersion = '1'
     gsonVersion = '2.8.1'
-    okHttpVersion = '3.8.1'
+    okHttpVersion = '4.7.2'
     androidAnnotationsVersion = '21.0.3'
     retrofitVersion = '2.3.0'
     roomVersion = '1.0.0'

@@ -29,7 +29,11 @@ abstract class RemoteModule {
         @Provides
         @JvmStatic
         fun provideArticleService(): ArticleService {
-            return ArticleServiceFactory.makeArticleService(BuildConfig.DEBUG)
+            return ArticleServiceFactory.makeArticleService(
+                BuildConfig.DEBUG,
+                BuildConfig.API_KEY,
+                BuildConfig.BASE_URL
+            )
         }
     }
 

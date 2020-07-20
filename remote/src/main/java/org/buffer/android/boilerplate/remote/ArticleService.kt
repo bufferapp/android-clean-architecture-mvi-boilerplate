@@ -3,7 +3,6 @@ package org.buffer.android.boilerplate.remote
 import io.reactivex.Flowable
 import org.buffer.android.boilerplate.remote.model.ArticleModel
 import retrofit2.http.GET
-import retrofit2.http.Query
 
 /**
  * Defines the abstract methods used for interacting with the Article API
@@ -11,7 +10,7 @@ import retrofit2.http.Query
 interface ArticleService {
 
     @GET("top-headlines?country=id")
-    fun getArticles(@Query("apiKey")key: String): Flowable<ArticleResponse>
+    fun getArticles(): Flowable<ArticleResponse>
 
     data class ArticleResponse(
             val status: String? = null,

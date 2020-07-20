@@ -16,15 +16,19 @@ import java.util.concurrent.TimeUnit
  */
 object ArticleServiceFactory {
 
-    fun makeArticleService(isDebug: Boolean): ArticleService {
-        val okHttpClient = makeOkHttpClient(
-                makeLoggingInterceptor(isDebug))
+    private lateinit var API_KEY: String
+    private lateinit var BASE_URL: String
+
+    fun makeArticleService(isDebug: Boolean, apiKey: String, baseUrl: String): ArticleService {
+        this.API_KEY = apiKey
+        this.BASE_URL = baseUrl
+        val okHttpClient = makeOkHttpClient(makeLoggingInterceptor(isDebug))
         return makeArticleService(okHttpClient, makeGson())
     }
 
     private fun makeArticleService(okHttpClient: OkHttpClient, gson: Gson): ArticleService {
         val retrofit = Retrofit.Builder()
-                .baseUrl("https://newsapi.org/v2/")
+                .baseUrl(BASE_URL)
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -34,6 +38,7 @@ object ArticleServiceFactory {
 
     private fun makeOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
+                .authenticator(RetrofitAuthenticator(API_KEY))
                 .addInterceptor(httpLoggingInterceptor)
                 .connectTimeout(120, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
